@@ -30,6 +30,7 @@ ofxProgressiveTextureLoad::ofxProgressiveTextureLoad(){
 	texture = NULL;
 	ID = numInstancesCreated;
 	numInstancesCreated++;
+    showTimeMeasurement = false;
 }
 
 ofxProgressiveTextureLoad::~ofxProgressiveTextureLoad(){
@@ -202,9 +203,13 @@ bool ofxProgressiveTextureLoad::isReadyToDrawWhileLoading(){
 	return false;
 }
 
+void ofxProgressiveTextureLoad::setShowTimeMeasurement(bool show){
+    showTimeMeasurement = show;
+}
+
 void ofxProgressiveTextureLoad::update(ofEventArgs &d){
 
-	TS_START_ACC("ProgTexLoad u");
+    if(showTimeMeasurement){TS_START_ACC("ProgTexLoad u");}
 	switch (state) {
 
 		case LOADING_FAILED:{
@@ -336,7 +341,7 @@ void ofxProgressiveTextureLoad::update(ofEventArgs &d){
 		setState(IDLE);
 		if(OFX_PROG_TEX_LOADER_MEAURE_TIMINGS) TS_STOP_NIF("total tex load time " + ofToString(ID));
 	}
-	TS_STOP_ACC("ProgTexLoad u");
+    if(showTimeMeasurement){TS_STOP_ACC("ProgTexLoad u");}
 }
 
 void ofxProgressiveTextureLoad::wrapUp(){
